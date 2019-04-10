@@ -1,0 +1,25 @@
+{
+    "name": "sct/instagram-shopping",
+    "description": "Instagram Shopping MVP",
+    "version": "v1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "SalesChannel Team"
+      }
+    ],
+    "autoload": {
+      "psr-4": {
+        "SalesChannelTeam\\Plugin\\InstagramShopping\\": "src/"
+      }
+    },
+    "extra": {
+      "shopware-plugin-class": "SalesChannelTeam\\Plugin\\InstagramShopping\\InstagramShopping",
+      "copyright": "(c) by SalesChannelTeam",
+      "label": {
+        "de_DE": "Instagram Shopping Integration",
+        "en_GB": "Integration for instagram shopping"
+      }
+    }
+  }
