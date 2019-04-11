@@ -40,31 +40,43 @@ class InstagramShopping extends AbstractController
         $accessToken = '';
 
         $curl = new cUrl;
-        $url = 'https://graph.facebook.com/v3.2/'.$catalogId.'/products';
-        $responses = [];
+        $url = 'https://graph.facebook.com/v3.2/'.$catalogId.'/batch';
+        
+        $response = '';
+        $data = [
+            "allow_upsert" => "true",
+            "access_token" => $accessToken
+        ];
 
         if ($entities->count() > 0) {
+            
             $exportCounter = 0;
+            
             /** @var \Shopware\Core\Content\Product\ProductEntity $entity */
             foreach ($entities as $entity) {
-                $data = [
-                    'name' => $entity->getName(),
-                    'description' => $entity->getDescription(),
-                    'retailer_id' => $entity->getId(),
-                    'brand' => $entity->getManufacturer()->getName(),
-                    'category' => 'shopware_integration',
-                    'url' => 'http://shopware6.test/detail/'.$entity->getId(),
-                    'image_url'=> $entity->getCover()->getMedia()->getUrl(),
-                    'currency' => 'EUR',
-                    'price' => number_format($entity->getPrice()->getGross() * 100, 0, '.', ''),
-                    'access_token' => $accessToken
-                ];
-
-                $request = $curl->newRequest('post', $url, $data)->setHeader('Accept-Charset', 'utf-8');
-                $request->send();
+                $data["requests"][] = [
+                    "method" => "UPDATE",
+                    "retailer_id" => $entity->getId(),
+                    "data" => [
+                        "availability" => "in stock",
+                        "brand" => $entity->getManufacturer()->getName(),
+                        "category" => "shopware_6_integration",
+                        "description" => $entity->getDescription(),
+                        "image_url" => $entity->getCover()->getMedia()->getUrl(),
+                        "name" => $entity->getName(),
+                        "price" => number_format($entity->getPrice()->getGross() * 100, 0, '.', ''),
+                        "currency" => "EUR",
+                        "condition" => "new",
+                        "url" => 'http://shopware6.test/detail/'.$entity->getId()
+                    ]
+                ];   
+                
                 $exportCounter++;
             }
         }
+
+        $request = $curl->newRequest('post', $url, $data)->setHeader('Accept-Charset', 'utf-8');
+        $response = $request->send();
 
         return new JsonResponse(array('data' => $exportCounter));
     }
