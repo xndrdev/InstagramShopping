@@ -1,6 +1,5 @@
 import { Application, Component } from 'src/core/shopware';
 import template from './instagram-shopping-settings.html.twig';
-//import HttpClient from 'asset/script/service/http-client.service';
 
 Component.register('instagram-shopping-settings', {
     template,
