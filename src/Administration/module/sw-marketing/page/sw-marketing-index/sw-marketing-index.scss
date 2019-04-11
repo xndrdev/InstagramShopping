@@ -1,0 +1,22 @@
+.sw-marketing-index {
+    .sw-marketing__card .sw-card__content {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    }
+
+    .sw-marketing-item {
+        .sw-marketing-item__icon {
+            height: 80px;
+            position: relative;
+
+            .sw-icon {
+                margin: auto;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                top: 0;
+            }
+        }
+    }
+}

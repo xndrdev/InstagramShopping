@@ -1,5 +1,9 @@
 {% sw_extends 'administration/index.html.twig' %}
 
+{% block administration_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/instagramshopping/static/css/InstagramShopping.css') }}">
+{% endblock %}
 
 {% block administration_scripts %}
     {{ parent() }}

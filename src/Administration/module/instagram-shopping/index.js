@@ -1,5 +1,9 @@
 import { Module } from 'src/core/shopware';
+
+import './extension/sw-marketing-index';
 import './page/instagram-shopping-settings';
+
+import enGB from './snippet/en_GB.json';
 
 Module.register('instagram-shopping', {
     type: 'plugin',
@@ -10,6 +14,9 @@ Module.register('instagram-shopping', {
     color: '#ff3d58',
     icon: 'default-shopping-paper-bag-product',
 
+    snippets: {
+        'en-GB': enGB
+    },
 
     routes: {
         settings: {

@@ -1,5 +1,19 @@
-{% block sw_marketing_index %}
+{% block sw_marketing %}
     <sw-page class="sw-marketing-index">
+        {% block sw_marketing_header %}
+            <template slot="smart-bar-header">
+                <h2>{{ $tc('sw-marketing.index.title') }}</h2>
+            </template>
+        {% endblock %}
 
+        {% block sw_marketing_content %}
+            <sw-card-view slot="content">
+                {% block sw_marketing_content_card %}
+                    <sw-card class="sw-marketing__card">
+                        <slot>{% block sw_marketing_content_card_slot_default %}{% endblock %}</slot>
+                    </sw-card>
+                {% endblock %}
+            </sw-card-view>
+        {% endblock %}
     </sw-page>
 {% endblock %}

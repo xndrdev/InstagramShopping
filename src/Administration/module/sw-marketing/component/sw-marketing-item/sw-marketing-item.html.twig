@@ -1,0 +1,16 @@
+{% block sw_settings_item %}
+    <router-link :to="to" class="sw-marketing-item" :class="classes">
+        {% block sw_marketing_item_icon %}
+            <div class="sw-marketing-item__icon">
+                <slot name="icon"></slot>
+            </div>
+        {% endblock %}
+
+        {% block sw_marketing_item_label %}
+            <div class="sw-marketing-item__label">
+                <slot name="label">{{ label }}</slot>
+            </div>
+        {% endblock %}
+    </router-link>
+{% endblock %}
+

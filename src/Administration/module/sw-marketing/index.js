@@ -1,5 +1,8 @@
-import { Module } from 'src/core/shopware';
+import { Module } from 'src/core/shopware'
+import './component/sw-marketing-item';
 import './page/sw-marketing-index';
+
+import enGB from './snippet/en_GB.json';
 
 Module.register('sw-marketing', {
     type: 'plugin',
@@ -9,6 +12,10 @@ Module.register('sw-marketing', {
     targetVersion: '1.0.0',
     color: '#ff3d58',
     icon: 'default-shopping-paper-bag-product',
+
+    snippets: {
+        'en-GB': enGB
+    },
 
     routes: {
         index: {
