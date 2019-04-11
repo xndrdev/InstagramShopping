@@ -4,12 +4,18 @@ import template from './instagram-shopping-settings.html.twig';
 Component.register('instagram-shopping-settings', {
     template,
 
+    inject: ['loginService'],
+
     methods: {
         exportProducts() {
             const httpClient = Application.getContainer('init').httpClient;
 
-            httpClient.post(
-                '/instagram-shopping-export'
+            httpClient.get(
+                '/instagram-shopping-export', {
+                    headers: {
+                        Authorization: `Bearer ${this.loginService.getToken()}`
+                    }
+                }
             ).then((response) => {
                 console.log(response.data);
             });
