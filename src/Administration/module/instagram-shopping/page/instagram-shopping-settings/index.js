@@ -10,9 +10,17 @@ Component.register('instagram-shopping-settings', {
         Mixin.getByName('notification')
     ],
 
+    data: function() {
+        return {
+            disabledButton: false
+        }
+    },
+
     methods: {
         exportProducts() {
             const httpClient = Application.getContainer('init').httpClient;
+
+            this.disabledButton = true;
 
             httpClient.get(
                 '/instagram-shopping-export', {
@@ -30,6 +38,8 @@ Component.register('instagram-shopping-settings', {
                     title: 'Error while exporting',
                     message: 'Service unavailable'
                 });
+            }).finally(() => {
+                this.disabledButton = false;
             });
         },
     }
