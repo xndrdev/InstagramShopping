@@ -17,6 +17,11 @@ use Shopware\Core\Framework\Plugin\Exception\PluginNotInstalledException;
 
 class InstagramShopping extends Plugin
 {
+    public function getAdministrationEntryPath(): string
+    {
+        return 'Administration';
+    }
+
     public function install(InstallContext $context): void
     {
         try {
