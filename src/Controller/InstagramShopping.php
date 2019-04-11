@@ -13,12 +13,12 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
-use anlutro\cURL\cURL;
+use anlutro\cURL\cURL as cUrl;
 
 class InstagramShopping extends AbstractController
 {
     /**
-     * @Route("/admin/instagram-shopping-export", name="instagram-shopping-export")
+     * @Route("/api/v1/instagram-shopping-export", name="instagram-shopping-export", methods={"GET"})
      */
     public function instagramShoppingExport() : JsonResponse
     {
@@ -39,7 +39,7 @@ class InstagramShopping extends AbstractController
         $catalogId = '';
         $accessToken = '';
 
-        $curl = new cURL;
+        $curl = new cUrl;
         $url = 'https://graph.facebook.com/v3.2/'.$catalogId.'/products';
         $responses = [];
 
