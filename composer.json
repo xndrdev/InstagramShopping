@@ -21,5 +21,8 @@
         "de_DE": "Instagram Shopping Integration",
         "en_GB": "Integration for instagram shopping"
       }
+    },
+    "require": {
+        "anlutro/curl": "^1.4"
     }
-  }
+}
