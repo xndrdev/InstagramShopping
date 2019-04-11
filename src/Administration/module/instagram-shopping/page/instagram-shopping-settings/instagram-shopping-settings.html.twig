@@ -1,5 +1,7 @@
 {% block instagram_shopping_settings %}
     <sw-page class="instagram-shopping-settings">
-
+        <template slot="smart-bar-actions">
+            <sw-button variant="primary" @click="exportProducts">Export Products</sw-button>
+        </template>
     </sw-page>
 {% endblock %}
