@@ -157,7 +157,7 @@ class InstagramShopping extends AbstractController
         if($response->body) {
             $data = json_decode($response->body);
 
-            if(count($data->data)) {
+            if(isset($data) && isset($data->data) && count($data->data) > 0) {
                 $products = array_merge($products, $data->data);
             }
 
@@ -172,8 +172,40 @@ class InstagramShopping extends AbstractController
             }
         }
 
-        die(print_r($products));
+        return new JsonResponse(array('data' => $products));
+    }
 
-        return new JsonResponse(array('data' => $deleteCounter));
+    /**
+     * @Route("/api/v1/instagram-shopping-local-products", name="instagram-shopping-local-products", methods={"GET"})
+     */
+    public function instagramShoppingLocalProducts() : JsonResponse
+    {
+        /** @var EntityRepositoryInterface $saleschannelRepository */
+        $saleschannelRepository = $this->container->get('sales_channel.repository');
+
+        /** @var \Shopware\Core\System\SalesChannel\SalesChannelEntity $salesChannelEntity */
+        $salesChannelEntity = $saleschannelRepository->search(new Criteria([
+            'd9410081ab13421abad6bc5056a87586'
+        ]), \Shopware\Core\Framework\Context::createDefaultContext())->first();
+
+        /** @var EntityRepositoryInterface $productRepository */
+        $productRepository = $this->container->get('product.repository');
+
+        /** @var EntityCollection $entities */
+        $entities = $productRepository->search((new Criteria())->addFilter(new EqualsFilter('product.visibilities.salesChannelId', $salesChannelEntity->getId())), Context::createDefaultContext());
+
+        $products = [];
+
+        if ($entities->count() > 0) {
+             /** @var \Shopware\Core\Content\Product\ProductEntity $entity */
+             foreach ($entities as $entity) {
+                $products[] = [
+                    'name' => $entity->getName(),
+                    'price' => $entity->getPrice()->getGross()
+                ]; 
+            }
+        }
+
+        return new JsonResponse(array('data' => $products));
     }
 }

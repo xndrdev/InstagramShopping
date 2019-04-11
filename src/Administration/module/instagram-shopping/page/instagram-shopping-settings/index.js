@@ -87,6 +87,26 @@ Component.register('instagram-shopping-settings', {
             }).finally(() => {
                 this.isLoading = false;
             });
+        },
+
+        getLocalProducts() {
+            const httpClient = Application.getContainer('init').httpClient;
+
+            this.isLoading = true;
+            
+            httpClient.get(
+                '/instagram-shopping-local-products', {
+                    headers: {
+                        Authorization: `Bearer ${this.loginService.getToken()}`
+                    }
+                }
+            ).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            }).finally(() => {
+                this.isLoading = false;
+            });
         }
     }
 });
