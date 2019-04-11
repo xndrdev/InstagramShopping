@@ -44,7 +44,7 @@ class InstagramShopping extends AbstractController
         $responses = [];
 
         if ($entities->count() > 0) {
-            
+            $exportCounter = 0;
             /** @var \Shopware\Core\Content\Product\ProductEntity $entity */
             foreach ($entities as $entity) {
                 $data = [
@@ -60,15 +60,12 @@ class InstagramShopping extends AbstractController
                     'access_token' => $accessToken
                 ];
 
-                print_r($data);
-                echo "\n";
-
                 $request = $curl->newRequest('post', $url, $data)->setHeader('Accept-Charset', 'utf-8');
-        
-                $responses[] = $request->send();
+                $request->send();
+                $exportCounter++;
             }
         }
 
-        return new JsonResponse($responses);
+        return new JsonResponse(array('data' => $exportCounter));
     }
 }
