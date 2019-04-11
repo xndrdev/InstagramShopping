@@ -3,6 +3,7 @@
         <template slot="smart-bar-actions">
             <sw-button :disabled="isLoading" variant="primary" @click="exportProducts">Export Products</sw-button>
             <sw-button :disabled="isLoading" variant="danger" @click="deleteProducts">Delete Products</sw-button>
+            <sw-button :disabled="isLoading" variant="ghost" @click="getAllProducts">Get all Products</sw-button>
         </template>
     </sw-page>
 {% endblock %}

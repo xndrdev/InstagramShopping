@@ -139,4 +139,41 @@ class InstagramShopping extends AbstractController
 
         return new JsonResponse(array('data' => $deleteCounter));
     }
+
+    /**
+     * @Route("/api/v1/instagram-shopping-products", name="instagram-shopping-products", methods={"GET"})
+     */
+    public function instagramShoppingProducts() : JsonResponse
+    {
+        $curl = new cUrl;
+        
+        $response = '';
+        $products = [];
+
+        $url = 'https://graph.facebook.com/v3.2/'.self::CATALOG_ID.'/products?access_token='.self::ACCESS_TOKEN;
+        $request = $curl->newRequest('get', $url)->setHeader('Accept-Charset', 'utf-8');
+        $response = $request->send();
+
+        if($response->body) {
+            $data = json_decode($response->body);
+
+            if(count($data->data)) {
+                $products = array_merge($products, $data->data);
+            }
+
+            while(isset($data->paging) && isset($data->paging->next)) {
+                $request = $curl->newRequest('get', $data->paging->next)->setHeader('Accept-Charset', 'utf-8');
+                $response = $request->send();
+                $data = json_decode($response->body);
+
+                if(count($data->data)) {
+                    $products = array_merge($products, $data->data);
+                }
+            }
+        }
+
+        die(print_r($products));
+
+        return new JsonResponse(array('data' => $deleteCounter));
+    }
 }
