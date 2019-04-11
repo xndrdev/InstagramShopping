@@ -3,5 +3,28 @@
         <template slot="smart-bar-actions">
             <sw-button variant="primary" @click="exportProducts">Export Products</sw-button>
         </template>
+
+        <template slot="side-content">
+
+            <sw-data-grid
+                :dataSource="[
+                    { id: 'uuid1', name: 'Product 1' },
+                    { id: 'uuid2', name: 'Product 2' },
+                    { id: 'uuid3', name: 'Product 3' },
+                    { id: 'uuid4', name: 'Product 4' },
+                    { id: 'uuid5', name: 'Product 5' }
+                ]"
+                :columns="[
+                    { property: 'name', label: 'Name', rawData: true }
+                ]"
+                :showSelection="false"
+                {# :isLoading="true" #}
+                :showActions="false">
+            </sw-data-grid>
+        </template>
+
+        <template slot="content">
+
+        </template>
     </sw-page>
 {% endblock %}
