@@ -1,7 +1,8 @@
 {% block instagram_shopping_settings %}
     <sw-page class="instagram-shopping-settings">
         <template slot="smart-bar-actions">
-            <sw-button :disabled="disabledButton" variant="primary" @click="exportProducts">Export Products</sw-button>
+            <sw-button :disabled="isLoading" variant="primary" @click="exportProducts">Export Products</sw-button>
+            <sw-button :disabled="isLoading" variant="danger" @click="deleteProducts">Delete Products</sw-button>
         </template>
     </sw-page>
 {% endblock %}

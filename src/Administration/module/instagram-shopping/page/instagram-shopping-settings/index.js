@@ -12,7 +12,7 @@ Component.register('instagram-shopping-settings', {
 
     data: function() {
         return {
-            disabledButton: false
+            isLoading: false,
         }
     },
 
@@ -20,8 +20,8 @@ Component.register('instagram-shopping-settings', {
         exportProducts() {
             const httpClient = Application.getContainer('init').httpClient;
 
-            this.disabledButton = true;
-
+            this.isLoading = true;
+            
             httpClient.get(
                 '/instagram-shopping-export', {
                     headers: {
@@ -39,8 +39,34 @@ Component.register('instagram-shopping-settings', {
                     message: 'Service unavailable'
                 });
             }).finally(() => {
-                this.disabledButton = false;
+                this.isLoading = false;
             });
         },
+
+        deleteProducts() {
+            const httpClient = Application.getContainer('init').httpClient;
+
+            this.isLoading = true;
+            
+            httpClient.get(
+                '/instagram-shopping-delete', {
+                    headers: {
+                        Authorization: `Bearer ${this.loginService.getToken()}`
+                    }
+                }
+            ).then((response) => {
+                this.createNotificationSuccess({
+                    title: 'Delete successful',
+                    message: 'Deleted '+response.data.data+' item(s)'
+                });
+            }).catch(() => {
+                this.createNotificationError({
+                    title: 'Error while deleting',
+                    message: 'Service unavailable'
+                });
+            }).finally(() => {
+                this.isLoading = false;
+            });
+        }
     }
 });

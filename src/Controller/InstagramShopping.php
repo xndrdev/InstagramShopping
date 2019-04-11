@@ -17,6 +17,9 @@ use anlutro\cURL\cURL as cUrl;
 
 class InstagramShopping extends AbstractController
 {
+    const CATALOG_ID = '';
+    const ACCESS_TOKEN = '';
+
     /**
      * @Route("/api/v1/instagram-shopping-export", name="instagram-shopping-export", methods={"GET"})
      */
@@ -36,16 +39,13 @@ class InstagramShopping extends AbstractController
         /** @var EntityCollection $entities */
         $entities = $productRepository->search((new Criteria())->addFilter(new EqualsFilter('product.visibilities.salesChannelId', $salesChannelEntity->getId())), Context::createDefaultContext());
 
-        $catalogId = '';
-        $accessToken = '';
-
         $curl = new cUrl;
-        $url = 'https://graph.facebook.com/v3.2/'.$catalogId.'/batch';
+        $url = 'https://graph.facebook.com/v3.2/'.self::CATALOG_ID.'/batch';
         
         $response = '';
         $data = [
             "allow_upsert" => "true",
-            "access_token" => $accessToken
+            "access_token" => self::ACCESS_TOKEN
         ];
 
         if ($entities->count() > 0) {
@@ -79,5 +79,64 @@ class InstagramShopping extends AbstractController
         $response = $request->send();
 
         return new JsonResponse(array('data' => $exportCounter));
+    }
+
+    /**
+     * @Route("/api/v1/instagram-shopping-delete", name="instagram-shopping-delete", methods={"GET"})
+     */
+    public function instagramShoppingDelete() : JsonResponse
+    {
+        $curl = new cUrl;
+        
+        $response = '';
+        $products = [];
+
+        $url = 'https://graph.facebook.com/v3.2/'.self::CATALOG_ID.'/products?access_token='.self::ACCESS_TOKEN;
+        $request = $curl->newRequest('get', $url)->setHeader('Accept-Charset', 'utf-8');
+        $response = $request->send();
+
+        if($response->body) {
+            $data = json_decode($response->body);
+
+            if(count($data->data)) {
+                $products = array_merge($products, $data->data);
+            }
+
+            while(isset($data->paging) && isset($data->paging->next)) {
+                $request = $curl->newRequest('get', $data->paging->next)->setHeader('Accept-Charset', 'utf-8');
+                $response = $request->send();
+                $data = json_decode($response->body);
+
+                if(count($data->data)) {
+                    $products = array_merge($products, $data->data);
+                }
+            }
+        }
+
+        $url = 'https://graph.facebook.com/v3.2/'.self::CATALOG_ID.'/batch';
+        
+        $response = '';
+        $data = [
+            "access_token" => self::ACCESS_TOKEN
+        ];
+
+        $deleteCounter = 0;
+
+        if (count($products) > 0) {
+            
+            foreach ($products as $product) {
+                $data["requests"][] = [
+                    "method" => "DELETE",
+                    "retailer_id" => $product->retailer_id,
+                ];   
+                
+                $deleteCounter++;
+            }
+        }
+
+        $request = $curl->newRequest('post', $url, $data)->setHeader('Accept-Charset', 'utf-8');
+        $request->send();
+
+        return new JsonResponse(array('data' => $deleteCounter));
     }
 }
