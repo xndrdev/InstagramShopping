@@ -6,6 +6,7 @@ use Doctrine\DBAL\Connection;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Util\AccessKeyHelper;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -33,6 +34,20 @@ class InstagramShopping extends Plugin
         }
     }
 
+    /**
+     * @param UninstallContext $context
+     */
+    public function uninstall(UninstallContext $context): void
+    {
+        /** @var EntityRepositoryInterface $salesChannelRepository */
+        $salesChannelRepository = $this->container->get('sales_channel.repository');
+        $salesChannelRepository->delete(array(array('id' => 'd9410081ab13421abad6bc5056a87586')),$context->getContext());
+
+        /** @var EntityRepositoryInterface $salesChannelTypeRepository */
+        $salesChannelTypeRepository = $this->container->get('sales_channel_type.repository');
+        $salesChannelTypeRepository->delete(array(array('id' => '7aa2118749664a8b98d8ab9cbf34babd')), $context->getContext());
+    }
+
     private function addMultiChannelTypes(Context $context): void
     {
         $salesChannelTypeRepository = $this->container->get('sales_channel_type.repository');
@@ -49,8 +64,8 @@ class InstagramShopping extends Plugin
 
     private function addMultiChannel(Context $context): void
     {
-        $countryId = $this->getDeDefaultCountryUuid();
-        $paymentId = $this->getDefaultPaymentUuid();
+        $countryId        = $this->getDeDefaultCountryUuid();
+        $paymentId        = $this->getDefaultPaymentUuid();
         $shippingMethodId = $this->getDefaultShippingUuid();
 
         $salesChannelRepository = $this->container->get('sales_channel.repository');
@@ -73,15 +88,12 @@ class InstagramShopping extends Plugin
         $salesChannelRepository->create([$salesChannel], $context);
     }
 
-    private function getDefaultShippingUuid() : string
+    private function getDefaultShippingUuid(): string
     {
         /** @var \Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $repository */
         $repository = $this->container->get('shipping_method.repository');
 
-        $entities = $repository->search(
-            (new Criteria())->addFilter(new EqualsFilter('active', 1)),
-            Context::createDefaultContext()
-        );
+        $entities = $repository->search((new Criteria())->addFilter(new EqualsFilter('active', 1)), Context::createDefaultContext());
 
         return $this->getInstallmentUuIdByEntities($entities);
     }
@@ -91,15 +103,12 @@ class InstagramShopping extends Plugin
      * @throws PluginNotInstalledException
      * @throws \Shopware\Core\Framework\DataAbstractionLayer\Exception\InconsistentCriteriaIdsException
      */
-    private function getDefaultPaymentUuid() : string
+    private function getDefaultPaymentUuid(): string
     {
         /** @var \Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $repository */
         $repository = $this->container->get('payment_method.repository');
 
-        $entities = $repository->search(
-            (new Criteria())->addFilter(new EqualsFilter('active', 1)),
-            Context::createDefaultContext()
-        );
+        $entities = $repository->search((new Criteria())->addFilter(new EqualsFilter('active', 1)), Context::createDefaultContext());
 
         return $this->getInstallmentUuIdByEntities($entities);
     }
@@ -109,15 +118,12 @@ class InstagramShopping extends Plugin
      * @throws PluginNotInstalledException
      * @throws \Shopware\Core\Framework\DataAbstractionLayer\Exception\InconsistentCriteriaIdsException
      */
-    private function getDeDefaultCountryUuid() : string
+    private function getDeDefaultCountryUuid(): string
     {
         /** @var \Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $repository */
         $repository = $this->container->get('country.repository');
 
-        $entities = $repository->search(
-            (new Criteria())->addFilter(new EqualsFilter('iso', 'DE')),
-            Context::createDefaultContext()
-        );
+        $entities = $repository->search((new Criteria())->addFilter(new EqualsFilter('iso', 'DE')), Context::createDefaultContext());
 
         return $this->getInstallmentUuIdByEntities($entities);
     }
@@ -128,11 +134,11 @@ class InstagramShopping extends Plugin
      * @return string
      * @throws PluginNotInstalledException
      */
-    final private function getInstallmentUuIdByEntities(EntitySearchResult $entitySearchResult) : string
+    final private function getInstallmentUuIdByEntities(EntitySearchResult $entitySearchResult): string
     {
         if ($entitySearchResult->getTotal() > 0) {
             foreach ($entitySearchResult->getIds() as $uUId) {
-                return (string) $uUId;
+                return (string)$uUId;
             }
         } else {
             throw new PluginNotInstalledException($this->getName());
