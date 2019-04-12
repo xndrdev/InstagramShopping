@@ -80,27 +80,6 @@ Component.register('instagram-shopping-settings', {
             });
         },
 
-        getAllProducts() {
-            const httpClient = Application.getContainer('init').httpClient;
-
-            this.isLoading = true;
-            
-            httpClient.get(
-                '/instagram-shopping-products', {
-                    headers: {
-                        Authorization: `Bearer ${this.loginService.getToken()}`
-                    }
-                }
-            ).then((response) => {
-                console.log(response);
-                this.instagramProducts = response.data.data;
-            }).catch((error) => {
-                console.log(error);
-            }).finally(() => {
-                this.isLoading = false;
-            });
-        },
-
         getLocalProducts() {
             const httpClient = Application.getContainer('init').httpClient;
 
@@ -165,6 +144,6 @@ Component.register('instagram-shopping-settings', {
         this.isLoading = true;
 
         this.getLocalProducts();
-        this.getAllProducts();
+        this.getInstagramProducts();
     }
 });
