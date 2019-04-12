@@ -4,17 +4,26 @@ import template from './instagram-shopping-settings.html.twig';
 Component.register('instagram-shopping-settings', {
     template,
 
-    inject: ['loginService'],
+    inject: [
+        'loginService',
+        'repositoryFactory',
+        'context'
+    ],
+
+    data() {
+        return {
+            repository: null,
+            products: null,
+            isLoading: false,
+            localProducts: [],
+            instagramProducts: []
+        };
+    },
 
     mixins: [
         Mixin.getByName('notification')
     ],
 
-    data: function() {
-        return {
-            isLoading: false,
-        }
-    },
 
     methods: {
         exportProducts() {
@@ -101,12 +110,55 @@ Component.register('instagram-shopping-settings', {
                     }
                 }
             ).then((response) => {
-                console.log(response);
+                this.localProducts = response.data.data;
+            }).catch((error) => {
+                console.log(error);
+            }).finally(() => {
+                this.isLoading = false;
+            });
+        },
+
+        getInstagramProducts() {
+            const httpClient = Application.getContainer('init').httpClient;
+
+            this.isLoading = true;
+
+            httpClient.get(
+                '/instagram-shopping-products', {
+                    headers: {
+                        Authorization: `Bearer ${this.loginService.getToken()}`
+                    }
+                }
+            ).then((response) => {
+                this.instagramProducts = response.data.data;
             }).catch((error) => {
                 console.log(error);
             }).finally(() => {
                 this.isLoading = false;
             });
         }
+    },
+
+    computed: {
+        columns() {
+            return [
+                {
+                    property: 'name',
+                    dataIndex: 'name',
+                    label: 'Name',
+                    allowResize: true,
+                    primary: true
+                }
+            ];
+        }
+    },
+
+    created() {
+        this.repository = this.repositoryFactory.create('product');
+        this.isLoading = true;
+
+        this.getLocalProducts();
+        this.getInstagramProducts();
+
     }
 });
