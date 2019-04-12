@@ -17,8 +17,8 @@ use anlutro\cURL\cURL as cUrl;
 
 class InstagramShopping extends AbstractController
 {
-    const CATALOG_ID = '2301606873237604';
-    const ACCESS_TOKEN = 'EAAF3cZAHi4fMBAFltokx4HWjLpvg2sozOcXnnON3znKcFe1xeAFyVuBhLd98tOYyCgOYGunTRscWlx4unun5HJhtUOXBUmUhHZCAfHqW7l8IPpPVvZASms0Vc6cM2X6LeBTZBoLniVHDsE9oqfkEzJJuCh0pRaORg5nZCG4sB2FtdFO0FJGBu';
+    const CATALOG_ID = '';
+    const ACCESS_TOKEN = '';
 
     /**
      * @Route("/api/v1/instagram-shopping-export", name="instagram-shopping-export", methods={"GET"})

@@ -126,12 +126,23 @@ Component.register('instagram-shopping-settings', {
     },
 
     computed: {
-        columns() {
+        columnsLocal() {
             return [
                 {
                     property: 'name',
                     dataIndex: 'name',
-                    label: 'Name',
+                    label: 'Local Products',
+                    allowResize: false,
+                    primary: true
+                }
+            ];
+        },
+        columnsInstagram() {
+            return [
+                {
+                    property: 'name',
+                    dataIndex: 'name',
+                    label: 'Instagram Products',
                     allowResize: false,
                     primary: true
                 }

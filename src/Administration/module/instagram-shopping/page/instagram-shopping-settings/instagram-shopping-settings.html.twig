@@ -3,38 +3,38 @@
         <template slot="smart-bar-actions">
             <sw-button :disabled="isLoading" variant="primary" @click="exportProducts">Export Products</sw-button>
             <sw-button :disabled="isLoading" variant="danger" @click="deleteProducts">Delete Products</sw-button>
-            <sw-button :disabled="isLoading" variant="ghost" @click="getInstagramProducts">Get all Products</sw-button>
-            <sw-button :disabled="isLoading" variant="ghost" @click="getLocalProducts">Get local Products</sw-button>
         </template>
         <template slot="content">
-            <sw-card :hero="false" :isLoading="false" :large="false">
-                    <h3>Local Products</h3>
-                    <sw-data-grid
-                        v-if="localProducts"
-                        :dataSource="localProducts"
-                        :columns="columns"
-                        :showSelection="false"
-                        :showActions="false"
-                        :showSettings="false"
-                        :isLoading="localProductsLoading"
-                        :fullPage="false">
-                    </sw-data-grid>
-                </sw-card>
-                 <sw-card :hero="false" :isLoading="false" :large="false">
-                    <h3>Products in Instagram</h3>
-                    <sw-data-grid
-                        v-if="instagramProducts"
-                        :dataSource="instagramProducts"
-                        :columns="columns"
-                        :showSelection="false"
-                        :showActions="false"
-                        :showSettings="false"
-                        :isLoading="instagramProductsLoading"
-                        :fullPage="false">
-                    </sw-data-grid>
-                </sw-card>
-            
+            <sw-card large style="margin-top: 50px;">
+                <sw-container columns="1fr 1fr">
+                    <sw-card-section divider="right">
+                        <sw-button :disabled="isLoading" variant="ghost" @click="getLocalProducts">Get local Products</sw-button>
+                        <sw-data-grid
+                            v-if="localProducts"
+                            :dataSource="localProducts"
+                            :columns="columnsLocal"
+                            :showSelection="false"
+                            :showActions="false"
+                            :showSettings="false"
+                            :isLoading="localProductsLoading"
+                            :fullPage="false">
+                        </sw-data-grid>
+                    </sw-card-section>
+                    <sw-card-section>
+                        <sw-button :disabled="isLoading" variant="ghost" @click="getInstagramProducts">Get Instagram Products</sw-button>
+                        <sw-data-grid
+                            v-if="instagramProducts"
+                            :dataSource="instagramProducts"
+                            :columns="columnsInstagram"
+                            :showSelection="false"
+                            :showActions="false"
+                            :showSettings="false"
+                            :isLoading="instagramProductsLoading"
+                            :fullPage="false">
+                        </sw-data-grid>
+                    </sw-card-section>
+                </sw-container>
+            </sw-card>
         </template>
-
     </sw-page>
 {% endblock %}
