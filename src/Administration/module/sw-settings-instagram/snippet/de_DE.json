@@ -1,0 +1,23 @@
+{
+    "sw-settings-instagram": {
+        "general": {
+            "mainMenuItemGeneral": "Instagram Shopping Setting",
+            "description": "Verwalten von Datenschutz-Einstellungen.",
+            "buttonSave": "Speichern",
+            "contextMenuEdit": "Bearbeiten",
+            "placeholderSearchBar": "Durchsuche Datenschutz-Einstellungen",
+            "titleError": "Fehler",
+            "titleSuccess": "Erfolg"
+        },
+        "index": {
+            "cardTitle": "Instagram Shopping",
+            "fieldSettingPlaceholder": "Bitte wähle einen Wert.",
+            "columnConfigurationKey": "Schlüssel",
+            "columnConfigurationValue": "Wert",
+            "columnSalesChannel": "Verkaufskanal",
+            "messageSaveError": "Die Einstellung konnte nicht gespeichert werden.",
+            "messageSaveSuccess": "Die Einstellung \"{key}\" wurde erfolgreich gespeichert.",
+            "salesChannelOptionEmpty": "Kein Verkaufskanal"
+        }
+    }
+}

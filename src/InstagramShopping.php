@@ -17,6 +17,21 @@ use Shopware\Core\Framework\Plugin\Exception\PluginNotInstalledException;
 
 class InstagramShopping extends Plugin
 {
+
+
+    public const PLUGIN_NAME = 'InstagramShopping';
+    public const PLUGIN_NAME_DESCRIPTION = 'InstagramShopping Channel';
+
+    public const SALES_CHANNEL_ID = 'd9410081ab13421abad6bc5056a87586';
+    public const SALES_CHANNEL_TYPE_ID = '7aa2118749664a8b98d8ab9cbf34babd';
+
+    public const ICON_NAME = 'default-communication-speech-bubble';
+    public const CONFIG_NAMESPACE = 'instagram';
+    public const ACCESS_TOKEN_NAME = 'access_token';
+    public const CATALOG_ID_NAME = 'catalog_id';
+
+
+
     public function getAdministrationEntryPath(): string
     {
         return 'Administration';
@@ -41,7 +56,7 @@ class InstagramShopping extends Plugin
     {
         /** @var EntityRepositoryInterface $salesChannelRepository */
         $salesChannelRepository = $this->container->get('sales_channel.repository');
-        $salesChannelRepository->delete(array(array('id' => 'd9410081ab13421abad6bc5056a87586')),$context->getContext());
+        $salesChannelRepository->delete(array(array('id' => 'd9410081ab13421abad6bc5056a87586')), $context->getContext());
 
         /** @var EntityRepositoryInterface $salesChannelTypeRepository */
         $salesChannelTypeRepository = $this->container->get('sales_channel_type.repository');
@@ -53,10 +68,10 @@ class InstagramShopping extends Plugin
         $salesChannelTypeRepository = $this->container->get('sales_channel_type.repository');
 
         $salesChannelType = [
-            'id'          => '7aa2118749664a8b98d8ab9cbf34babd',
-            'iconName'    => 'default-communication-speech-bubble',
-            'name'        => 'InstagramShopping',
-            'description' => 'InstagramShopping Channel'
+            'id'          => self::SALES_CHANNEL_TYPE_ID,
+            'iconName'    => self::ICON_NAME,
+            'name'        => self::PLUGIN_NAME,
+            'description' => self::PLUGIN_NAME_DESCRIPTION
         ];
 
         $salesChannelTypeRepository->create([$salesChannelType], $context);
@@ -71,8 +86,8 @@ class InstagramShopping extends Plugin
         $salesChannelRepository = $this->container->get('sales_channel.repository');
 
         $salesChannel = [
-            'id'                 => 'd9410081ab13421abad6bc5056a87586',
-            'typeId'             => '7aa2118749664a8b98d8ab9cbf34babd',
+            'id'                 => self::SALES_CHANNEL_ID,
+            'typeId'             => self::SALES_CHANNEL_TYPE_ID,
             'languageId'         => Defaults::LANGUAGE_SYSTEM,
             'currencyId'         => Defaults::CURRENCY,
             'paymentMethodId'    => $paymentId, //@ToDo use default if exists
