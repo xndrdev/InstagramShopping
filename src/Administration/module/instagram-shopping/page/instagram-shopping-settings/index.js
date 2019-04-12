@@ -127,7 +127,7 @@ Component.register('instagram-shopping-settings', {
                     property: 'name',
                     dataIndex: 'name',
                     label: 'Name',
-                    allowResize: true,
+                    allowResize: false,
                     primary: true
                 }
             ];
