@@ -7,8 +7,7 @@
             <sw-button :disabled="isLoading" variant="ghost" @click="getLocalProducts">Get local Products</sw-button>
         </template>
         <template slot="content">
-            <sw-container columns="1fr 1fr">
-                <div>
+            <sw-card :hero="false" :isLoading="false" :large="false">
                     <h3>Local Products</h3>
                     <sw-data-grid
                         v-if="localProducts"
@@ -20,8 +19,8 @@
                         :isLoading="localProductsLoading"
                         :fullPage="false">
                     </sw-data-grid>
-                </div>
-                <div>
+                </sw-card>
+                 <sw-card :hero="false" :isLoading="false" :large="false">
                     <h3>Products in Instagram</h3>
                     <sw-data-grid
                         v-if="instagramProducts"
@@ -33,8 +32,8 @@
                         :isLoading="instagramProductsLoading"
                         :fullPage="false">
                     </sw-data-grid>
-                </div>
-            </sw-container>
+                </sw-card>
+            
         </template>
 
     </sw-page>
