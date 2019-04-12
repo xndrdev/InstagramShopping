@@ -6,5 +6,32 @@
             <sw-button :disabled="isLoading" variant="ghost" @click="getAllProducts">Get all Products</sw-button>
             <sw-button :disabled="isLoading" variant="ghost" @click="getLocalProducts">Get local Products</sw-button>
         </template>
+        <template slot="content">
+            <sw-container columns="1fr 1fr">
+                <div>
+                    <sw-data-grid
+                        v-if="localProducts"
+                        :dataSource="localProducts"
+                        :columns="columns"
+                        :showSelection="false"
+                        :showActions="false"
+                        :showSettings="false"
+                        :fullPage="false">
+                    </sw-data-grid>
+                </div>
+                <div>
+                    <sw-data-grid
+                        v-if="instagramProducts"
+                        :dataSource="instagramProducts"
+                        :columns="columns"
+                        :showSelection="false"
+                        :showActions="false"
+                        :showSettings="false"
+                        :fullPage="false">
+                    </sw-data-grid>
+                </div>
+            </sw-container>
+        </template>
+
     </sw-page>
 {% endblock %}
