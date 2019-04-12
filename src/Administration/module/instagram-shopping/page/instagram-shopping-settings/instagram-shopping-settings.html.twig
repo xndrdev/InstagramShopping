@@ -9,6 +9,7 @@
         <template slot="content">
             <sw-container columns="1fr 1fr">
                 <div>
+                    <h3>Local Products</h3>
                     <sw-data-grid
                         v-if="localProducts"
                         :dataSource="localProducts"
@@ -21,6 +22,7 @@
                     </sw-data-grid>
                 </div>
                 <div>
+                    <h3>Products in Instagram</h3>
                     <sw-data-grid
                         v-if="instagramProducts"
                         :dataSource="instagramProducts"
