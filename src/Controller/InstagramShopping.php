@@ -42,7 +42,6 @@ class InstagramShopping extends AbstractController
         $curl = new cUrl;
         $url = 'https://graph.facebook.com/v3.2/'.self::CATALOG_ID.'/batch';
         
-        $response = '';
         $data = [
             "allow_upsert" => "true",
             "access_token" => self::ACCESS_TOKEN
@@ -60,14 +59,14 @@ class InstagramShopping extends AbstractController
                     "data" => [
                         "availability" => "in stock",
                         "brand" => $entity->getManufacturer()->getName(),
-                        "category" => "shopware_6_integration",
+                        "category" => "shopware_integration",
                         "description" => $entity->getDescription(),
                         "image_url" => $entity->getCover()->getMedia()->getUrl(),
                         "name" => $entity->getName(),
                         "price" => number_format($entity->getPrice()->getGross() * 100, 0, '.', ''),
                         "currency" => "EUR",
                         "condition" => "new",
-                        "url" => 'http://shopware6.test/detail/'.$entity->getId()
+                        "url" => 'http://shopware.test/detail/'.$entity->getId()
                     ]
                 ];   
                 
@@ -76,7 +75,7 @@ class InstagramShopping extends AbstractController
         }
 
         $request = $curl->newRequest('post', $url, $data)->setHeader('Accept-Charset', 'utf-8');
-        $response = $request->send();
+        $request->send();
 
         return new JsonResponse(array('data' => $exportCounter));
     }
